@@ -7,7 +7,7 @@
 - [x]  vue-cli를 사용하여 todoapp(boiler-plate) 생성
 - [ ]  컴포넌트 분리 및 기능 추가
   - [x]  TodoHeader
-  - [ ]  TodoInput
+  - [x]  TodoInput
   - [ ]  TodoList
   - [ ]  TodoCount
 - [ ]  vuex 적용

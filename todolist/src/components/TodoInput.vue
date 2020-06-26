@@ -1,10 +1,23 @@
 <template>
-  <input id="new-todo-title" class="new-todo" placeholder="할일을 추가해주세요" autofocus>
+  <input v-model="newTodoItem" v-on:keyup.enter="addTodoItem" id="new-todo-title" class="new-todo" placeholder="할일을 추가해주세요" autofocus>
 </template>
 
 <script>
 export default {
-
+    data() {
+        return {    
+            newTodoItem: ''
+        }
+    },
+    methods: {
+        addTodoItem() {
+            this.$emit('addTodo', this.newTodoItem)
+            this.clearInput()
+        },
+        clearInput() {
+            this.newTodoItem = ''
+        }
+    }
 }
 </script>
 

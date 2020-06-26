@@ -1,7 +1,7 @@
 <template>
   <section class="todoapp">
     <TodoHeader></TodoHeader>
-    <TodoInput></TodoInput>
+    <TodoInput v-on:addTodo="addOneItem"></TodoInput>
     <TodoList></TodoList>
     <TodoCount></TodoCount>
   </section>
@@ -14,6 +14,18 @@ import TodoList from './components/TodoList.vue'
 import TodoCount from './components/TodoCount.vue'
 
 export default {
+  data() {
+    return {
+      todoItems: []
+    }
+  },
+  methods: {
+    addOneItem(todoItem) {
+      const obj = {completed: false, item: todoItem}
+      localStorage.setItem(todoItem, JSON.stringify(obj))
+      this.todoItems.push(obj)  
+    }
+  },
   components: {
     TodoHeader,
     TodoInput,
