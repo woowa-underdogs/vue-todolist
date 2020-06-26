@@ -5,11 +5,11 @@
 
 ## 구현 목록
 - [x]  vue-cli를 사용하여 todoapp(boiler-plate) 생성
-- [ ]  컴포넌트 분리
-  - [ ]  TodoHeader
+- [ ]  컴포넌트 분리 및 기능 추가
+  - [x]  TodoHeader
   - [ ]  TodoInput
   - [ ]  TodoList
-  - [ ]  TodoFooter
+  - [ ]  TodoCount
 - [ ]  vuex 적용
 - [ ]  helper 적용
 - [ ]  모듈화
