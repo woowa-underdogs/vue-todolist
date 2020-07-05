@@ -2,37 +2,48 @@
     <div class="main">
       <input class="toggle-all" type="checkbox">
       <ul id="todo-list" class="todo-list">
-        <li>
-          <div class="view">
-            <input class="toggle" type="checkbox">
-            <label class="label">새로운 타이틀</label>
-            <button class="destroy"></button>
-          </div>
-          <input class="edit" value="새로운 타이틀">
-        </li>
-        <li class="editing">
-          <div class="view">
-            <input class="toggle" type="checkbox">
-            <label class="label">완료된 타이틀</label>
-            <button class="destroy"></button>
-          </div>
-          <input class="edit" value="완료된 타이틀">
-        </li>
-        <li class="completed">
-          <div class="view">
-            <input class="toggle" type="checkbox">
-            <label class="label">완료된 타이틀</label>
-            <button class="destroy"></button>
-          </div>
-          <input class="edit" value="완료된 타이틀">
-        </li>
+          <li v-for="(todoItem, index) in propsdata" v-bind:key=todoItem.item v-bind:class="{completed: todoItem.completed, editing: todoItem.editing}">
+            <div v-if=!todoItem.editing>
+                <input v-on:click="toggleItemCompleted(todoItem)" class="toggle" type="checkbox" v-bind:checked=todoItem.completed>
+                <label v-on:dblclick="startItemEditing(todoItem)" class="label">{{ todoItem.item }}</label>
+                <button v-on:click="removeTodoItem(todoItem, index)" class="destroy"></button> 
+            </div>
+            <input 
+                v-else class="edit" autofocus
+                v-on:keyup.esc="endItemEditing(todoItem)" 
+                v-on:keyup.enter="updateTodoItem(todoItem, index, $event.target.value)" 
+                v-bind:value="todoItem.item"
+            >    
+          </li>
       </ul>
     </div>
 </template>
 
 <script>
 export default {
-
+    props: ['propsdata'],
+    methods: {
+        removeTodoItem(todoItem, index) {
+            this.$emit('removeTodo', {todoItem, index})
+        },
+        updateTodoItem(todoItem, index, updateItem) {
+            todoItem.editing = !todoItem.editing
+            this.$emit('updateTodo', {todoItem, index, updateItem})
+        },
+        toggleItemCompleted(todoItem) {   
+            todoItem.completed = !todoItem.completed         
+            this.$emit('toggleCompleted', todoItem)
+        },
+        startItemEditing(todoItem) {
+            todoItem.editing = !todoItem.editing
+            this.beforeUpdate = todoItem.item
+            this.$emit('toggleEditing', todoItem)
+        },
+        endItemEditing(todoItem) {
+            todoItem.editing = !todoItem.editing
+            todoItem.item = this.beforeUpdate
+        }
+    }
 }
 </script>
 

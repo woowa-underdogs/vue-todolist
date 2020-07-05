@@ -11,6 +11,9 @@ export default {
     },
     methods: {
         addTodoItem() {
+            if (this.newTodoItem === '') {
+                return 
+            }
             this.$emit('addTodo', this.newTodoItem)
             this.clearInput()
         },

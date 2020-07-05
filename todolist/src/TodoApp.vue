@@ -2,7 +2,13 @@
   <section class="todoapp">
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addTodo="addOneItem"></TodoInput>
-    <TodoList></TodoList>
+    <TodoList 
+      v-bind:propsdata="todoItems" 
+      v-on:removeTodo="removeOneItem"
+      v-on:updateTodo="updateOneItem"
+      v-on:toggleCompleted="toggleOneCompleted"
+      v-on:toggleEditing="toggleOneEditing"
+      ></TodoList>
     <TodoCount></TodoCount>
   </section>
 </template>
@@ -21,9 +27,38 @@ export default {
   },
   methods: {
     addOneItem(todoItem) {
-      const obj = {completed: false, item: todoItem}
+      const obj = {completed: false, editing: false, item: todoItem}
       localStorage.setItem(todoItem, JSON.stringify(obj))
       this.todoItems.push(obj)  
+    },
+    removeOneItem(payload) {
+      this.todoItems.splice(payload.index, 1)
+      localStorage.removeItem(payload.todoItem.item)
+    },
+    updateOneItem(payload) {
+      localStorage.removeItem(payload.todoItem.item)
+      payload.todoItem.item = payload.updateItem
+      localStorage.setItem(payload.todoItem.item, JSON.stringify(payload.todoItem))
+      this.todoItems[payload.index] = payload.todoItem
+    },
+    toggleOneCompleted(todoItem) {
+      localStorage.removeItem(todoItem.item)
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem))
+    },
+    toggleOneEditing(todoItem) {
+      localStorage.removeItem(todoItem.item)
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem))
+    }
+  },
+  created(){
+    if (localStorage.length > 0) {
+        for (let i = 0; i < localStorage.length; i++) {
+          if (localStorage.key(i) !== 'loglevel:webpack-dev-server' && localStorage.key(i) !== 'randid'){
+            const item = JSON.parse(localStorage.getItem(localStorage.key(i)))
+            item.editing = false
+            this.todoItems.push(item)
+          }
+        }
     }
   },
   components: {
