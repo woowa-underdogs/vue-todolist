@@ -16,6 +16,9 @@ export default {
             }
             this.$store.commit('addOneItem', this.newTodoItem)
             this.clearInput()
+        },
+        clearInput() {
+            this.newTodoItem = ''
         }
     }
 }

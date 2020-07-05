@@ -12,4 +12,4 @@
   - [x]  TodoCount
 - [x]  vuex 적용
 - [x]  helper 적용
-- [ ]  모듈화
+- [x]  모듈화
