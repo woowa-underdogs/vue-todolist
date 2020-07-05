@@ -1,6 +1,6 @@
 <template>
     <div class="count-container">
-      <span class="todo-count">총 <strong>{{ this.$store.getters.computedTodos.length }}</strong> 개</span>
+      <span class="todo-count">총 <strong>{{ this.computedTodos.length }}</strong> 개</span>
       <ul class="filters">
         <li>
           <a class="all selected" v-on:click="changeStateAll($event.target)">전체보기</a>
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     props: ['propsdata'],
     methods: {
@@ -49,6 +51,9 @@ export default {
             el.classList.add('selected');
             this.$store.commit('onVisibility', 'completed')
         }
+    },
+    computed: {
+        ...mapGetters(['computedTodos'])
     }
 }
 </script>

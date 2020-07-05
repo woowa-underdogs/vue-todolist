@@ -2,15 +2,15 @@
     <div class="main">
       <input class="toggle-all" type="checkbox">
       <ul id="todo-list" class="todo-list">
-          <li v-for="(todoItem, index) in this.$store.getters.computedTodos" v-bind:key=todoItem.id v-bind:class="{completed: todoItem.completed, editing: todoItem.editing}">
+          <li v-for="(todoItem, index) in this.computedTodos" v-bind:key=todoItem.id v-bind:class="{completed: todoItem.completed, editing: todoItem.editing}">
             <div v-if=!todoItem.editing>
                 <input v-on:click="toggleItemCompleted(todoItem)" class="toggle" type="checkbox" v-bind:checked=todoItem.completed>
-                <label v-on:dblclick="startItemEditing(todoItem)" class="label">{{ todoItem.item }}</label>
-                <button v-on:click="removeTodoItem(todoItem, index)" class="destroy"></button> 
+                <label v-on:dblclick="toggleItemEditing(todoItem)" class="label">{{ todoItem.item }}</label>
+                <button v-on:click="removeTodoItem({todoItem, index})" class="destroy"></button> 
             </div>
             <input 
                 v-else class="edit" autofocus
-                v-on:keyup.esc="endItemEditing(todoItem)" 
+                v-on:keyup.esc="toggleItemEditing(todoItem)" 
                 v-on:keyup.enter="updateTodoItem(todoItem, index, $event.target.value)" 
                 v-bind:value="todoItem.item"
             >    
@@ -20,29 +20,22 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
     props: ['propsdata'],
     methods: {
-        removeTodoItem(todoItem, index) {
-            this.$store.commit('removeOneItem', {todoItem, index})
-        },
+        ...mapMutations({
+            removeTodoItem: 'removeOneItem',
+            toggleItemCompleted: 'toggleOneCompleted',
+            toggleItemEditing: 'toggleOneEditing'
+        }),
         updateTodoItem(todoItem, index, updateItem) {
-            todoItem.editing = !todoItem.editing
             this.$store.commit('updateOneItem', {todoItem, index, updateItem})
-        },
-        toggleItemCompleted(todoItem) {   
-            todoItem.completed = !todoItem.completed         
-            this.$store.commit('toggleOneCompleted', todoItem)
-        },
-        startItemEditing(todoItem) {
-            todoItem.editing = !todoItem.editing
-            this.beforeUpdate = todoItem.item
-            this.$store.commit('toggleOneEditing', todoItem)
-        },
-        endItemEditing(todoItem) {
-            todoItem.editing = !todoItem.editing
-            todoItem.item = this.beforeUpdate
         }
+    },
+    computed: {
+        ...mapGetters(['computedTodos'])
     }
 }
 </script>

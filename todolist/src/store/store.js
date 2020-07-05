@@ -49,23 +49,26 @@ export const store = new Vuex.Store({
         addOneItem(state, todoItem) {
             const obj = {completed: false, editing: false, item: todoItem}
             localStorage.setItem(todoItem, JSON.stringify(obj))
-            state.todoItems.push(obj)  
+            state.todoItems.push(obj)
         },
         removeOneItem(state, payload) {
             state.todoItems.splice(payload.index, 1)
             localStorage.removeItem(payload.todoItem.item)
         },
         updateOneItem(state, payload) {
+            payload.todoItem.editing = !payload.todoItem.editing
             localStorage.removeItem(payload.todoItem.item)
             payload.todoItem.item = payload.updateItem
             localStorage.setItem(payload.todoItem.item, JSON.stringify(payload.todoItem))
             state.todoItems[payload.index] = payload.todoItem
         },
         toggleOneCompleted(state, todoItem) {
+            todoItem.completed = !todoItem.completed         
             localStorage.removeItem(todoItem.item)
             localStorage.setItem(todoItem.item, JSON.stringify(todoItem))
         },
         toggleOneEditing(state, todoItem) {
+            todoItem.editing = !todoItem.editing
             localStorage.removeItem(todoItem.item)
             localStorage.setItem(todoItem.item, JSON.stringify(todoItem))
         },
