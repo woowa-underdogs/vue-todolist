@@ -8,8 +8,8 @@
 - [ ]  컴포넌트 분리 및 기능 추가
   - [x]  TodoHeader
   - [x]  TodoInput
-  - [ ]  TodoList
-  - [ ]  TodoCount
+  - [x]  TodoList
+  - [x]  TodoCount
 - [ ]  vuex 적용
 - [ ]  helper 적용
 - [ ]  모듈화
