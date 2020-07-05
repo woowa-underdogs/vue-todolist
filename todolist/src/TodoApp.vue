@@ -3,13 +3,13 @@
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addTodo="addOneItem"></TodoInput>
     <TodoList 
-      v-bind:propsdata="todoItems" 
+      v-bind:propsdata="computedTodos" 
       v-on:removeTodo="removeOneItem"
       v-on:updateTodo="updateOneItem"
       v-on:toggleCompleted="toggleOneCompleted"
       v-on:toggleEditing="toggleOneEditing"
       ></TodoList>
-    <TodoCount></TodoCount>
+    <TodoCount v-bind:propsdata="computedTodos" v-on:changeState="onVisibility"></TodoCount>
   </section>
 </template>
 
@@ -18,11 +18,33 @@ import TodoHeader from './components/TodoHeader.vue'
 import TodoInput from  './components/TodoInput.vue'
 import TodoList from './components/TodoList.vue'
 import TodoCount from './components/TodoCount.vue'
+  
+var filters = {
+		all: function (todos) {
+			return todos;
+		},
+		active: function (todos) {
+			return todos.filter(function (todo) {
+				return !todo.completed;
+			});
+		},
+		completed: function (todos) {
+			return todos.filter(function (todo) {
+				return todo.completed;
+			});
+		}
+	};
 
 export default {
   data() {
     return {
-      todoItems: []
+      todoItems: [],
+      visibility: 'all'
+    }
+  },
+  computed: {
+    computedTodos() {
+      return filters[this.visibility](this.todoItems);
     }
   },
   methods: {
@@ -48,6 +70,9 @@ export default {
     toggleOneEditing(todoItem) {
       localStorage.removeItem(todoItem.item)
       localStorage.setItem(todoItem.item, JSON.stringify(todoItem))
+    },
+    onVisibility(state) {
+      this.visibility = state
     }
   },
   created(){

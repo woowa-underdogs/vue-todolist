@@ -2,7 +2,7 @@
     <div class="main">
       <input class="toggle-all" type="checkbox">
       <ul id="todo-list" class="todo-list">
-          <li v-for="(todoItem, index) in propsdata" v-bind:key=todoItem.item v-bind:class="{completed: todoItem.completed, editing: todoItem.editing}">
+          <li v-for="(todoItem, index) in propsdata" v-bind:key=todoItem.id v-bind:class="{completed: todoItem.completed, editing: todoItem.editing}">
             <div v-if=!todoItem.editing>
                 <input v-on:click="toggleItemCompleted(todoItem)" class="toggle" type="checkbox" v-bind:checked=todoItem.completed>
                 <label v-on:dblclick="startItemEditing(todoItem)" class="label">{{ todoItem.item }}</label>
