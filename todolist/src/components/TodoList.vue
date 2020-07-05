@@ -2,7 +2,7 @@
     <div class="main">
       <input class="toggle-all" type="checkbox">
       <ul id="todo-list" class="todo-list">
-          <li v-for="(todoItem, index) in propsdata" v-bind:key=todoItem.id v-bind:class="{completed: todoItem.completed, editing: todoItem.editing}">
+          <li v-for="(todoItem, index) in this.$store.getters.computedTodos" v-bind:key=todoItem.id v-bind:class="{completed: todoItem.completed, editing: todoItem.editing}">
             <div v-if=!todoItem.editing>
                 <input v-on:click="toggleItemCompleted(todoItem)" class="toggle" type="checkbox" v-bind:checked=todoItem.completed>
                 <label v-on:dblclick="startItemEditing(todoItem)" class="label">{{ todoItem.item }}</label>
@@ -24,20 +24,20 @@ export default {
     props: ['propsdata'],
     methods: {
         removeTodoItem(todoItem, index) {
-            this.$emit('removeTodo', {todoItem, index})
+            this.$store.commit('removeOneItem', {todoItem, index})
         },
         updateTodoItem(todoItem, index, updateItem) {
             todoItem.editing = !todoItem.editing
-            this.$emit('updateTodo', {todoItem, index, updateItem})
+            this.$store.commit('updateOneItem', {todoItem, index, updateItem})
         },
         toggleItemCompleted(todoItem) {   
             todoItem.completed = !todoItem.completed         
-            this.$emit('toggleCompleted', todoItem)
+            this.$store.commit('toggleOneCompleted', todoItem)
         },
         startItemEditing(todoItem) {
             todoItem.editing = !todoItem.editing
             this.beforeUpdate = todoItem.item
-            this.$emit('toggleEditing', todoItem)
+            this.$store.commit('toggleOneEditing', todoItem)
         },
         endItemEditing(todoItem) {
             todoItem.editing = !todoItem.editing

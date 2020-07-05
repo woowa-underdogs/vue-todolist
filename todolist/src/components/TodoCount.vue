@@ -1,6 +1,6 @@
 <template>
     <div class="count-container">
-      <span class="todo-count">총 <strong>{{ propsdata.length }}</strong> 개</span>
+      <span class="todo-count">총 <strong>{{ this.$store.getters.computedTodos.length }}</strong> 개</span>
       <ul class="filters">
         <li>
           <a class="all selected" v-on:click="changeStateAll($event.target)">전체보기</a>
@@ -27,7 +27,7 @@ export default {
                 document.querySelector('.active').classList.remove('selected')
             }
             el.classList.add('selected');
-            this.$emit('changeState', 'all')
+            this.$store.commit('onVisibility', 'all')
         },
         changeStateActive(el) {
             if (document.querySelector('.completed').classList.contains('selected')) {
@@ -37,7 +37,7 @@ export default {
                 document.querySelector('.all').classList.remove('selected')
             }
             el.classList.add('selected');
-            this.$emit('changeState', 'active')
+            this.$store.commit('onVisibility', 'active')
         },
         changeStateCompleted(el) {
             if (document.querySelector('.all').classList.contains('selected')) {
@@ -47,7 +47,7 @@ export default {
                 document.querySelector('.active').classList.remove('selected')
             }
             el.classList.add('selected');
-            this.$emit('changeState', 'completed')
+            this.$store.commit('onVisibility', 'completed')
         }
     }
 }

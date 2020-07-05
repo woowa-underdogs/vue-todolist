@@ -10,6 +10,6 @@
   - [x]  TodoInput
   - [x]  TodoList
   - [x]  TodoCount
-- [ ]  vuex 적용
+- [x]  vuex 적용
 - [ ]  helper 적용
 - [ ]  모듈화
